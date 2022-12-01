@@ -1,4 +1,4 @@
-from .days.day_1 import Solution
+from ..days.day_1 import Solution
 
 test_data = """1000
 2000
