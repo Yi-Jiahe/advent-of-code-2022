@@ -10,21 +10,18 @@ if __name__ == '__main__':
 
     import importlib
     try:
-        module = importlib.import_module(f'day_{args.day}')
+        module = importlib.import_module(f'days.day_{args.day}')
     except ModuleNotFoundError as e:
         print(f"Solution for day {args.day} not found")
         exit()
 
     solution = module.Solution()
-    solution.load_data()
+    data = solution.load_from_file(f'inputs/day_{args.day}_input.txt')
 
     if not args.part:
-        solution.part_one()
-        solution.part_two()
+        solution.part_one(data)
+        solution.part_two(data)
     elif args.part == 1:
-        solution.part_one()
+        solution.part_one(data)
     elif args.part == 2:
-        solution.part_two()
-
-
-    
+        solution.part_two(data)
