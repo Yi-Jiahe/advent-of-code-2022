@@ -15,3 +15,4 @@ fi
 cp days/template_day.txt "days/day_${day}.py"
 touch "inputs/day_${day}_input.txt"
 cp tests/template_test.txt "tests/test_day_${day}.py"
+sed -i "s/DAY/${day}/" "tests/test_day_${day}.py"
