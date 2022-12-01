@@ -24,4 +24,5 @@ class Solution:
         print(f"Elf {elf_no} has the most calories at {max_calories}cal.")
 
     def part_two(self):
-        raise NotImplementedError
+        calories = sorted(map(sum, self.elves))
+        print(f"Total calories of top three elves is {sum(calories[-3:])}cal.")
