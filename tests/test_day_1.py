@@ -1,6 +1,6 @@
 from ..days.day_1 import Solution
 
-test_data = """1000
+test_input = """1000
 2000
 3000
 
@@ -16,7 +16,10 @@ test_data = """1000
 10000"""
 
 solution = Solution()
-solution.load(test_data)
+data = solution.load(test_input.splitlines())
 
 def test_part_one():
-    pass
+    assert(solution.part_one(data) == 24000)
+
+def test_part_two():
+    assert(solution.part_two(data) == 45000)

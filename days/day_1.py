@@ -15,11 +15,18 @@ class Solution:
                 calories = 0
             else:
                 calories += int(line)
+        elves.append(calories)
+
         elves.sort()
         return elves
 
-    def part_one(self, elves: [int]):    
-        print(f"The most calories carried by an elf is {elves[-1]}cal.")
+    def part_one(self, elves: [int]) -> str:    
+        ans = elves[-1]
+        print(f"The most calories carried by an elf is {ans}cal.")
+        return ans
 
-    def part_two(self, elves: [int]):
-        print(f"Total calories of top three elves is {sum(elves[-3:])}cal.")
+
+    def part_two(self, elves: [int]) -> str:
+        ans = sum(elves[-3:])
+        print(f"Total calories of top three elves is {ans}cal.")
+        return ans
