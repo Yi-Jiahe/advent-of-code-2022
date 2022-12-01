@@ -8,15 +8,18 @@ if __name__ == '__main__':
     parser.add_argument('--part', type=int)
     args = parser.parse_args()
 
+    day = str(args.day).zfill(2)
+    print(day)
+
     import importlib
     try:
-        module = importlib.import_module(f'days.day_{args.day}')
+        module = importlib.import_module(f'days.day_{day}')
     except ModuleNotFoundError as e:
-        print(f"Solution for day {args.day} not found")
+        print(f"Solution for day {day} not found")
         exit()
 
     solution = module.Solution()
-    data = solution.load_from_file(f'inputs/day_{args.day}_input.txt')
+    data = solution.load_from_file(f'inputs/day_{day}_input.txt')
 
     if not args.part:
         solution.part_one(data)

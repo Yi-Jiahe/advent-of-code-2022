@@ -1,4 +1,4 @@
-from ..days.day_1 import Solution
+from ..days.day_01 import Solution
 
 test_input = """1000
 2000
