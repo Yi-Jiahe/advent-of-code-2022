@@ -13,5 +13,4 @@ def test_part_one():
     assert(solution.part_one(data) == 15)
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        solution.part_two(data)
+    assert(solution.part_two(data) == 12)

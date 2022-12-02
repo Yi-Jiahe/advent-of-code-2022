@@ -1,12 +1,4 @@
 class Solution:
-    symbols = {
-        'A': 'Rock',
-        'B': 'Paper',
-        'C': 'Scissors',
-        'X': 'Rock',
-        'Y': 'Paper',
-        'Z': 'Scissors'
-    }
     scoring = {
         'shape': {
             'Rock': 1,
@@ -34,10 +26,19 @@ class Solution:
         return ret
 
     def part_one(self, data: []) -> str:
+        symbols = {
+            'A': 'Rock',
+            'B': 'Paper',
+            'C': 'Scissors',
+            'X': 'Rock',
+            'Y': 'Paper',
+            'Z': 'Scissors'
+        }
+
         total_score = 0
 
         for round in data:
-            opponent, me = self.symbols[round[0]], self.symbols[round[1]]
+            opponent, me = symbols[round[0]], symbols[round[1]]
         
             shape_score = self.scoring['shape'][me]
         
@@ -59,7 +60,45 @@ class Solution:
         return total_score
 
 
-    def part_two(self, elves: [int]) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+    def part_two(self, data: []) -> str:
+        symbols = {
+            'A': 'Rock',
+            'B': 'Paper',
+            'C': 'Scissors',
+            'X': 'lose',
+            'Y': 'draw',
+            'Z': 'win'
+        }
+
+        total_score = 0
+
+        for round in data:
+            opponent, outcome = symbols[round[0]], symbols[round[1]]
+            
+            me = None
+            outcome_score = None
+            if outcome == 'draw':
+                outcome_score = self.scoring['outcome']['draw']
+                me = opponent
+            elif outcome == 'win':
+                outcome_score = self.scoring['outcome']['won']
+                if opponent == 'Rock':
+                    me = 'Paper'
+                elif opponent == 'Scissors':
+                    me = 'Rock'
+                elif opponent == 'Paper':
+                    me = 'Scissors'
+            elif outcome == 'lose':
+                outcome_score = self.scoring['outcome']['lost']
+                if opponent == 'Rock':
+                    me = 'Scissors'
+                elif opponent == 'Scissors':
+                    me = 'Paper'
+                elif opponent == 'Paper':
+                    me = 'Rock'
+            shape_score = self.scoring['shape'][me]
+
+            total_score += shape_score + outcome_score
+
+        print(f"The total score will be {total_score}")
+        return total_score
