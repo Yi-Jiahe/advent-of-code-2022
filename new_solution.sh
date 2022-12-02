@@ -5,9 +5,10 @@ if [[ -z $1 ]]; then
   exit 1
 fi
 
-day=$1
+day=$(printf "%02d" $1)
 
-if [ -d "day_${day}" ]; then
+
+if [ -f "days/day_${day}.py" ]; then
   echo "Solution already exists for day ${day}"
   exit 1
 fi
