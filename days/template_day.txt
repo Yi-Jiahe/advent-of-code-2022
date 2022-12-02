@@ -18,7 +18,7 @@ class Solution:
         return ans
 
 
-    def part_two(self, elves: [int]) -> str:
+    def part_two(self, data: []) -> str:
         ans = None
         raise NotImplementedError
         return ans
