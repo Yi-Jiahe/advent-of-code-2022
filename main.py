@@ -9,7 +9,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     day = str(args.day).zfill(2)
-    print(day)
+    print(f"Running solution for day {day}")
 
     import importlib
     try:
@@ -21,10 +21,15 @@ if __name__ == '__main__':
     solution = module.Solution()
     data = solution.load_from_file(f'inputs/day_{day}_input.txt')
 
-    if not args.part:
-        solution.part_one(data)
-        solution.part_two(data)
-    elif args.part == 1:
-        solution.part_one(data)
-    elif args.part == 2:
-        solution.part_two(data)
+    if not args.part or args.part == 1:
+        print("----------Part One----------")
+        try:
+            solution.part_one(data)
+        except NotImplementedError:
+            print("Solution for part one not yet implemented")
+    if not args.part or args.part == 2:
+        print("----------Part Two----------")
+        try:
+            solution.part_two(data)
+        except NotImplementedError:
+            print("Solution for part one not yet implemented")
