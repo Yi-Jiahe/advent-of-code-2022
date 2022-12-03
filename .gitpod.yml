@@ -7,13 +7,8 @@ image:
 
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - name: Setup venv
-    init: |
+  - init: |
       poetry install
-    command: source .venv/bin/activate
-  - name: Prepare for day
     command: |
       source .venv/bin/activate
       bash new_solution.sh "$(date +'%d')"
-
-
