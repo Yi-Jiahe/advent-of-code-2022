@@ -10,12 +10,10 @@ tasks:
   - name: Setup venv
     init: |
       poetry install
-      source .venv/bin/activate
-      cp template.env .env
-      python manage.py migrate
-    command: source .venv/bin/activateRUN curl -sSL https://install.python-poetry.org | python3 -
+    command: source .venv/bin/activate
   - name: Prepare for day
     command: |
+      source .venv/bin/activate
       bash new_solution.sh "$(date +'%d')"
 
 
