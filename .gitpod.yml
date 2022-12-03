@@ -2,10 +2,18 @@
 # Please adjust to your needs (see https://www.gitpod.io/docs/config-gitpod-file)
 # and commit this file to your remote git repository to share the goodness with others.
 
-tasks:
-  - name: Install dependencies
-    init: pip install -r requirements/dev.txt
+image:
+  file: .gitpod.Dockerfile
 
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - name: Setup venv
+    init: |
+      poetry install
+      source .venv/bin/activate
+      cp template.env .env
+      python manage.py migrate
+    command: source .venv/bin/activateRUN curl -sSL https://install.python-poetry.org | python3 -
   - name: Prepare for day
     command: |
       bash new_solution.sh "$(date +'%d')"
