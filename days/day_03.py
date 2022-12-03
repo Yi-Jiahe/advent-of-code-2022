@@ -7,6 +7,14 @@ class Solution:
             return self.load(f)
 
     def load(self, iterable) -> []:
+        '''
+        Takes in a list of rucksacks given as characters all on a single line.
+        A given rucksack always has the same number of items in each of its two compartments,
+        so the first half of the characters represent items in the first compartment, 
+        while the second half of the characters represent items in the second compartment.
+
+        Returns a list of rucksacks split into two compartments.
+        '''
         ret = []
         for line in map(lambda line: line.strip(), iterable):
             half = len(line) // 2
@@ -24,9 +32,25 @@ class Solution:
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+        priority_sum = 0
+        i = 1
+        rucksacks = []
+        for rucksack in data:
+            rucksacks.append(set(rucksack[0] + rucksack[1]))
+            if i == 3:
+                # Find badge
+                intersection = set.intersection(*rucksacks)
+                if len(intersection) != 1:
+                    raise RuntimeError("Unable to identify badge")
+                priority_sum += self.priority(intersection.pop())
+                # Reset group
+                i = 1
+                rucksacks = []
+            else:
+                i += 1
+
+        print(f"The sum of priorities of badges is {priority_sum}")
+        return priority_sum
 
     def priority(self, item: str) -> int:
         ascii_repr = ord(item)
