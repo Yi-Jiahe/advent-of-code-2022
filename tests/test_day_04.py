@@ -16,8 +16,7 @@ def test_part_one():
     assert(solution.part_one(data) == 2)
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        solution.part_two(data)
+    assert solution.part_two(data) == 4
 
 @pytest.mark.parametrize("test_input, expected", [
     ([[1, 1], [1, 1]], True),
@@ -35,3 +34,16 @@ def test_fully_contains(test_input, expected):
     first, second = test_input
     assert solution.fully_contains(first, second) == expected
     assert solution.fully_contains(second, first) == expected
+
+@pytest.mark.parametrize("test_input, expected", [
+    ([[1, 1], [1, 1]], True),
+    ([[1, 2], [1, 3]], True),
+    ([[1, 4], [2, 3]], True),
+    ([[1, 2], [2, 3]], True),
+    ([[1, 2], [3, 4]], False),
+
+])
+def test_overlaps(test_input, expected):
+    first, second = test_input
+    assert solution.overlaps(first, second) == expected
+    assert solution.overlaps(second, first) == expected

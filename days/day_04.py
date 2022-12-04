@@ -23,9 +23,12 @@ class Solution:
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+        num_overlaps = 0
+        for first, second in data:
+          if self.overlaps(first, second):
+            num_overlaps += 1
+        print(f"{num_overlaps} pairs have overlapping ranges")
+        return num_overlaps
 
     def fully_contains(self, first: [int], second: [int]) -> bool:
         if first[0] == second[0]:
@@ -38,5 +41,16 @@ class Solution:
         elif first[0] > second[0]:
             # Second might contain the first
             if first[1] <= second[1]:
+                return True
+        return False
+
+    def overlaps(self, first: [int], second: [int]) -> bool:
+        if first[0] == second[0]:
+            return True
+        elif first[0] < second[0]:
+            if first[1] >= second[0]:
+                return True
+        elif first[0] > second[0]:
+            if second[1] >= first[0]:
                 return True
         return False
