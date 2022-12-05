@@ -9,14 +9,16 @@ move 1 from 1 to 2"""
 
 solution = Solution()
 data = solution.load(test_input.splitlines())
+
 solution.stacks = [
         ['Z', 'N'],
         ['M', 'C', 'D'],
         ['P']
     ]
+
+
 def test_part_one():
     assert solution.part_one(data) == "CMZ"
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
+    assert solution.part_two(data) == "MCD"

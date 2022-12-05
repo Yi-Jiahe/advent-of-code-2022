@@ -1,4 +1,6 @@
 import re
+import copy
+
 
 class Solution:
     def __init__(self):
@@ -29,18 +31,30 @@ class Solution:
             ret.append(tuple(map(int, result.groups())))
         return ret
 
-    def part_one(self, data: []) -> str:    
+    def part_one(self, data: []) -> str:
+        stacks = copy.deepcopy(self.stacks)
         for number, from_stack, to_stack in data:
             for _ in range(number):
-                self.stacks[to_stack-1].append(self.stacks[from_stack-1].pop())
-        ans = ""
-        for stack in self.stacks:
-            ans += stack[-1]
+                stacks[to_stack-1].append(stacks[from_stack-1].pop())
+        ans = self.top_crates(stacks)
         print(f"The top of each stack spells: {ans}")
         return ans
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
+        stacks = copy.deepcopy(self.stacks)
+        for number, from_stack, to_stack in data:
+            # print(f"move {number} from {stacks[from_stack-1]} to {stacks[to_stack-1]}")
+            moving = stacks[from_stack-1][-number:]
+            stacks[from_stack-1] = stacks[from_stack-1][:-number]
+            stacks[to_stack-1] = stacks[to_stack-1] + moving
+            # print(f"Result: from: {stacks[from_stack-1]}, to: {stacks[to_stack-1]}")
+        ans = self.top_crates(stacks)
+        print(f"The top of each stack spells: {ans}")
         return ans
+
+    def top_crates(self, stacks):
+        ret = ""
+        for stack in stacks:
+            ret += stack[-1]
+        return ret

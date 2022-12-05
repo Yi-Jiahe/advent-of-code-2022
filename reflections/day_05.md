@@ -9,3 +9,8 @@ It would have been more convinent if they had provided the stacks in row form.
 # Part 1
 
 Actually, hardcoding the stacks was quite tedious too.
+
+# Part 2
+
+Based on the solution in part 1, modifying the stacks in part 1 will affect the results of part 2.
+The solution was to create a deepcopy of the stacks for working on.
