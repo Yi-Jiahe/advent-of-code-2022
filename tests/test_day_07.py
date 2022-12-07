@@ -33,5 +33,4 @@ def test_part_one():
     assert solution.part_one(data) == "95437"
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
+    assert solution.part_two(data) == "24933642"

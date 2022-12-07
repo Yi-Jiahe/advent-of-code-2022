@@ -8,3 +8,9 @@ Precalculating the directory sizes without doing another DFS is reliant on the w
 Especially the way directories are exited to continue the search and the final exit.
 
 Spent a bit of extra time adding a print method to the nodes to allow visual inspection of the data ingestion.
+
+# Part 2
+
+Had to expand the print method in order to do debugging on the actual input because of the size.
+
+As expected the size calcuation had to be fixed. 
