@@ -54,9 +54,17 @@ class Solution:
 
     def part_one(self, data: []) -> str:    
         ans = 0
-        data.print()
-        raise NotImplementedError
-        return ans
+        node = None
+        stack = [data]
+        while stack:
+            node = stack.pop()
+            if node.size <= 100000:
+                ans += node.size
+            for child in node.children.values():
+                if child.children:
+                    stack.append(child)
+        print(f"The sum of the total sizes of directories with size at most 100000 is {ans}.")
+        return str(ans)
 
 
     def part_two(self, data: []) -> str:
