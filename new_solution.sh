@@ -5,7 +5,7 @@ if [[ -z $1 ]]; then
   exit 1
 fi
 
-day=$(printf "%02d" $1)
+day=$(printf "%02d" $(( 10#$1 )))
 
 
 if [ -f "days/day_${day}.py" ]; then
