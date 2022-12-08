@@ -30,7 +30,6 @@ def test_find_start_of_packet_marker(test_input, expected):
     ("nppdvjthqldpwncqszvftbrmjlhg", 23),
     ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29),
     ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26)
-
 ])
 def test_find_start_of_message_marker(test_input, expected):
     assert solution.find_start_of_message_marker(test_input) == expected

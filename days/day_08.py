@@ -1,3 +1,6 @@
+from functools import reduce
+
+
 class TreeGrid:
     def __init__(self, tree_grid):
         self.trees = tree_grid
@@ -43,6 +46,46 @@ class TreeGrid:
 
         return False
 
+    def scenic_score(self, i, j) -> int:
+        if i == 0 or j == 0 or i == self.dimensions[0] - 1 or j == self.dimensions[1] - 1:
+            return 0
+
+        height = self.trees[i][j]
+        viewing_distances = []
+
+        # Up
+        viewing_distance = 0
+        for i_comp in range(i-1, -1, -1):
+            viewing_distance += 1
+            if self.trees[i_comp][j] >= height:
+                break
+        viewing_distances.append(viewing_distance)
+
+        # Left
+        viewing_distance = 0
+        for j_comp in range(j-1, -1, -1):
+            viewing_distance += 1
+            if self.trees[i][j_comp] >= height:
+                break
+        viewing_distances.append(viewing_distance)
+
+        # Down
+        viewing_distance = 0
+        for i_comp in range(i + 1, self.dimensions[0]):
+            viewing_distance += 1
+            if self.trees[i_comp][j] >= height:
+                break
+        viewing_distances.append(viewing_distance)
+
+        # Right
+        viewing_distance = 0
+        for j_comp in range(j + 1, self.dimensions[1]):
+            viewing_distance += 1
+            if self.trees[i][j_comp] >= height:
+                break
+        viewing_distances.append(viewing_distance)
+        return reduce(lambda a, b: a*b, viewing_distances)
+
 class Solution:
     def __init__(self):
         pass
@@ -63,7 +106,12 @@ class Solution:
         print(f"{visible_trees} trees are visible from outside the grid")
         return str(visible_trees)
 
-    def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+    def part_two(self, tree_grid: TreeGrid) -> str:   
+        highest_scenic_score = 0
+        for i in range(tree_grid.dimensions[0]):
+            for j in range(tree_grid.dimensions[1]):
+                scenic_score = tree_grid.scenic_score(i, j)
+                if scenic_score > highest_scenic_score:
+                    highest_scenic_score = scenic_score
+        print(f"The highest scenic score is {highest_scenic_score}")
+        return str(highest_scenic_score)

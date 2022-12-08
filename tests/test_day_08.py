@@ -15,5 +15,12 @@ def test_part_one():
     assert solution.part_one(data) == "21"
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
+    assert solution.part_two(data) == "8"
+
+@pytest.mark.parametrize("test_input, expected", [
+    ((1, 2), 4),
+    ((3, 2), 8)
+])
+def test_scenic_score(test_input, expected):
+    i, j = test_input
+    assert data.scenic_score(i, j) == expected
