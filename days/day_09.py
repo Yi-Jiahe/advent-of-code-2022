@@ -26,7 +26,7 @@ class Rope:
         if self.touching(i-1, i):
             return
 
-        error = [c_h - c_t for c_h, c_t in zip(self.knots[i-1], self.knots[i])]
+        error = [c_i_minus_1 - c_i for c_i_minus_1, c_i in zip(self.knots[i-1], self.knots[i])]
 
         # If the head is ever two steps directly up, down, left, or right from the tail, the tail must also move one step in that direction so it remains close enough:
         if 0 in error:
@@ -47,8 +47,8 @@ class Rope:
             self.knots[i][axis] += error[axis]//abs_error
 
     def touching(self, i, j) -> bool:
-        for c_0, c_1 in zip(self.knots[i], self.knots[j]):
-            if abs(c_0 - c_1) >= 2:
+        for c_i, c_j in zip(self.knots[i], self.knots[j]):
+            if abs(c_i - c_j) >= 2:
                 return False
         return True
 
@@ -76,7 +76,7 @@ class Solution:
         visited_positions = set()
         for direction, steps in data:
             for _ in rope.move(direction, steps):
-                visited_positions.add(tuple(rope.knots[1]))
+                visited_positions.add(tuple(rope.knots[-1]))
 
         ans = len(visited_positions)
         print(f"The tail visits {ans} positions at least once.")
@@ -85,6 +85,14 @@ class Solution:
 
 
     def part_two(self, data: [(str, int)]) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+        rope = Rope(10)
+
+        visited_positions = set()
+        for direction, steps in data:
+            for _ in rope.move(direction, steps):
+                visited_positions.add(tuple(rope.knots[-1]))
+
+        ans = len(visited_positions)
+        print(f"The tail visits {ans} positions at least once.")
+
+        return str(ans)

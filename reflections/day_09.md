@@ -10,3 +10,5 @@ The main holdups I faced were not handling all the cases, especially the no move
 # Part 2
 
 Oh boy that rope sure got extended.
+Fortunately the base code for rope physics was easy enough to extend too.
+Naming the varables for the error was probably the hardest bit.
