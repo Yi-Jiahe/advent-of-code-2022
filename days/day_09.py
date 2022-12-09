@@ -1,31 +1,32 @@
 class Rope:
-    def __init__(self):
-        self.position_head = [0, 0]
-        self.position_tail = [0, 0]
+    def __init__(self, n_knots: int):
+        self.n_knots = n_knots
+        self.knots = [[0, 0] for _ in range(self.n_knots)]
     
     def move(self, direction: str, steps: int):
         for _ in range(steps):
             self.__move_head(direction)
-            self.__move_tail()
+            for i in range(1, self.n_knots):
+                self.__move_knot(i)
             yield
 
     def __move_head(self, direction: str):
         if direction == 'U':
-            self.position_head[1] += 1
+            self.knots[0][1] += 1
         elif direction == 'D':
-            self.position_head[1] -= 1
+            self.knots[0][1] -= 1
         elif direction == 'L':
-            self.position_head[0] -= 1
+            self.knots[0][0] -= 1
         elif direction == 'R':
-            self.position_head[0] += 1
+            self.knots[0][0] += 1
         else:
             raise ValueError("Invalid direction")
 
-    def __move_tail(self):
-        if self.touching():
+    def __move_knot(self, i: int):
+        if self.touching(i-1, i):
             return
 
-        error = [c_h - c_t for c_h, c_t in zip(self.position_head, self.position_tail)]
+        error = [c_h - c_t for c_h, c_t in zip(self.knots[i-1], self.knots[i])]
 
         # If the head is ever two steps directly up, down, left, or right from the tail, the tail must also move one step in that direction so it remains close enough:
         if 0 in error:
@@ -36,18 +37,18 @@ class Rope:
                 if abs_error == 1:
                     return
                 elif abs_error == 2:
-                    self.position_tail[axis] += error[axis]//abs_error
+                    self.knots[i][axis] += error[axis]//abs_error
                     return
                 raise ValueError("Error too large")
 
         # Otherwise, if the head and tail aren't touching and aren't in the same row or column, the tail always moves one step diagonally to keep up:
         for axis in range(2):
             abs_error = abs(error[axis])
-            self.position_tail[axis] += error[axis]//abs_error
+            self.knots[i][axis] += error[axis]//abs_error
 
-    def touching(self) -> bool:
-        for c_h, c_t in zip(self.position_head, self.position_tail):
-            if abs(c_h - c_t) >= 2:
+    def touching(self, i, j) -> bool:
+        for c_0, c_1 in zip(self.knots[i], self.knots[j]):
+            if abs(c_0 - c_1) >= 2:
                 return False
         return True
 
@@ -70,12 +71,12 @@ class Solution:
         return ret
 
     def part_one(self, data: [(str, int)]) -> str:
-        rope = Rope()
+        rope = Rope(2)
 
         visited_positions = set()
         for direction, steps in data:
             for _ in rope.move(direction, steps):
-                visited_positions.add(tuple(rope.position_tail))
+                visited_positions.add(tuple(rope.knots[1]))
 
         ans = len(visited_positions)
         print(f"The tail visits {ans} positions at least once.")
