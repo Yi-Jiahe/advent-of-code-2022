@@ -11,6 +11,7 @@ class CPU:
 
     def run_program(self):
         self.cycle = 1
+        yield
         for _ in self.__run_cycle():
             self.cycle += 1
             yield
@@ -27,6 +28,21 @@ class CPU:
                 self.registers['X'] += int(args[0])
                 yield
         return False
+
+class CRT:
+    def __init__(self):
+        # 40 pixels wide x 6 pixels high
+        # '.' represents a dark pixel
+        # '#' represents a lit pixel
+        self.screen = [['.' for _ in range(40)] for _ in range(6)]
+
+    def draw(self, position: int):
+        self.screen[position // 40][position % 40] = '#'
+
+    def print(self):
+        for row in self.screen:
+            print(row)
+
 
 class Solution:
     def __init__(self):
@@ -57,7 +73,20 @@ class Solution:
         return str(ans)
 
 
-    def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+    def part_two(self, program: [(str, (str))]) -> str:
+        cpu = CPU()
+        cpu.load_program(program)
+        
+        crt = CRT()
+
+        for _ in cpu.run_program():
+            middle = cpu.registers['X'] % 40
+            window = [
+                middle - 1,
+                middle + 1 
+            ]
+            if window[0] <= (cpu.cycle - 1) % 40 <= window[1]:
+                crt.draw(cpu.cycle - 1)
+
+        crt.print()
+        return

@@ -156,5 +156,5 @@ def test_part_one():
     assert solution.part_one(data) == "13140"
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
+    # Looks right
+    assert solution.part_two(data) == None
