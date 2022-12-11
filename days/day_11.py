@@ -1,5 +1,7 @@
 import re
 import copy
+import math
+
 
 class Monkey:
     def __init__(self, i):
@@ -11,12 +13,13 @@ class Monkey:
         self.false = None
         self.inspections = 0
 
-    def play(self) -> (int, int):
+    def play(self, relived=True) -> (int, int):
         while self.items:
             self.inspections += 1
             worry_level = self.items.pop(0)
             worry_level = self.operation(worry_level)
-            worry_level = worry_level // 3
+            if relived:
+                worry_level = worry_level // 3
             reciepient = self.true if worry_level % self.test == 0 else self.false
             yield reciepient, worry_level
 
@@ -111,6 +114,19 @@ class Solution:
 
 
     def part_two(self, monkeys: dict) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+        monkeys = copy.deepcopy(monkeys)
+    
+        max_worry = math.prod([monkey.test for monkey in monkeys.values()])
+
+        for round_i in range(1, 10000+1):
+            for _, monkey in sorted(monkeys.items()):
+                for reciepient, worry_level in monkey.play(relived=False):
+                    worry_level %= max_worry
+                    monkeys[reciepient].items.append(worry_level)
+
+        inspections = sorted([monkey.inspections for monkey in monkeys.values()])
+        ans = inspections[-2] * inspections[-1]
+
+        print(f"The level of monkey business is {ans}")
+
+        return str(ans)
