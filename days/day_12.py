@@ -66,6 +66,14 @@ class Solution:
 
 
     def part_two(self, heightmap: Heightmap) -> str:
-        ans = None
-        raise NotImplementedError
-        return ans
+        least_steps = float('inf')
+        for i, row in enumerate(heightmap.heightmap):
+            for j, point in enumerate(row):
+                if point == 0:
+                    heightmap.start = (i, j)
+                    search = Dijkstra(heightmap)
+                    steps = search.search()
+                    if steps < least_steps:
+                        least_steps = steps
+        print(f"The fewest steps requred is {least_steps}")
+        return str(least_steps)
