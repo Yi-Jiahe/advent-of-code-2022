@@ -1,5 +1,7 @@
 import json
 from itertools import zip_longest
+import copy
+from functools import cmp_to_key
 
 
 def grouper(iterable, n, *, incomplete='fill', fillvalue=None):
@@ -37,24 +39,33 @@ class Solution:
     def part_one(self, data: []) -> str:    
         ans = 0
         for i, (left, right) in enumerate(grouper(data, 2, incomplete='strict')):
-            print(i, left, right)
-            if self.compare(left, right) == 1:
+            if self.compare(left, right) == -1:
                 ans += i + 1
+        print(f"Ans: {ans}")
         return str(ans)
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        return ans
+        packets = copy.deepcopy(data)
+        packets.extend([[[2]], [[6]]])
+
+        packets.sort(key=cmp_to_key(self.compare))
+
+        ans = 1
+        for i, packet in enumerate(packets):
+            if packet in ([[2]], [[6]]):
+                ans *= i + 1
+        print(f"Decoder key: {ans}")
+        return str(ans)
 
     def compare(self, left, right) -> int:
         """
-        returns 1 if left comes first, -1 if right comes first and 0 if they are equal.
+        returns -1 if left comes first, 1 if right comes first and 0 if they are equal.
         """
         if isinstance(left, int) and isinstance(right, int):
             if left == right:
                 return 0
-            return 1 if left < right else -1
+            return -1 if left < right else 1
         # Convert non-list to list
         if isinstance(left, int):
             left = [left]
@@ -75,9 +86,9 @@ class Solution:
             if exhausted[0] and exhausted[1]:
                 return 0
             if exhausted[0]:
-                return 1
-            if exhausted[1]:
                 return -1
+            if exhausted[1]:
+                return 1
             result = self.compare(a, b)
             if result == 0:
                 continue
