@@ -12,13 +12,15 @@ class Solution:
             pass
         return ret
 
-    def part_one(self, data: []) -> str:    
+    def part_one(self, data: []) -> str:
         ans = None
         raise NotImplementedError
-        return ans
+        print(f"Ans: {ans}")
+        return str(ans)
 
 
     def part_two(self, data: []) -> str:
         ans = None
         raise NotImplementedError
-        return ans
+        print(f"Ans: {ans}")
+        return str(ans)
