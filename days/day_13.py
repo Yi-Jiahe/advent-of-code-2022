@@ -1,3 +1,23 @@
+import json
+from itertools import zip_longest
+
+
+def grouper(iterable, n, *, incomplete='fill', fillvalue=None):
+    "Collect data into non-overlapping fixed-length chunks or blocks"
+    # grouper('ABCDEFG', 3, fillvalue='x') --> ABC DEF Gxx
+    # grouper('ABCDEFG', 3, incomplete='strict') --> ABC DEF ValueError
+    # grouper('ABCDEFG', 3, incomplete='ignore') --> ABC DEF
+    args = [iter(iterable)] * n
+    if incomplete == 'fill':
+        return zip_longest(*args, fillvalue=fillvalue)
+    if incomplete == 'strict':
+        return zip(*args, strict=True)
+    if incomplete == 'ignore':
+        return zip(*args)
+    else:
+        raise ValueError('Expected fill, strict, or ignore')
+
+
 class Solution:
     def __init__(self):
         pass
@@ -9,18 +29,22 @@ class Solution:
     def load(self, iterable) -> []:
         ret = []
         for line in map(lambda line: line.strip(), iterable):
-            pass
+            if line == "":
+                continue
+            ret.append(json.loads(line))
         return ret
 
     def part_one(self, data: []) -> str:    
-        ans = None
-        raise NotImplementedError
-        return ans
+        ans = 0
+        for i, (left, right) in enumerate(grouper(data, 2, incomplete='strict')):
+            print(i, left, right)
+            if self.compare(left, right) == 1:
+                ans += i + 1
+        return str(ans)
 
 
     def part_two(self, data: []) -> str:
         ans = None
-        raise NotImplementedError
         return ans
 
     def compare(self, left, right) -> int:

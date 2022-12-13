@@ -155,6 +155,5 @@ data = solution.load(test_input.splitlines())
 def test_part_one():
     assert solution.part_one(data) == "13140"
 
-def test_part_two():
-    # Looks right
-    assert solution.part_two(data) == None
+# def test_part_two():
+#     assert solution.part_two(data) == None
