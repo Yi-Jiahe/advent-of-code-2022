@@ -22,7 +22,6 @@ class RockMap:
             print(''.join(row))
     
     def print_filled_map(self, grains: set):
-        print(grains)
         min_x = float("inf")
         max_x = 0
         max_y = 0
@@ -30,8 +29,6 @@ class RockMap:
             min_x = min(x, min_x)
             max_x = max(x, max_x)
             max_y = max(y, max_y)
-            if y > 9:
-                print(x, y)
         ret = [['.' for _ in range(max_x - min_x + 1)] for _ in range(max_y + 1)]
         ret[0][500-min_x] = '+'
         for x, y in self.rocks:
@@ -40,7 +37,6 @@ class RockMap:
             ret[y][x-min_x] = 'o'
         for row in ret:
             print(''.join(row))
-        
         return ret
         
 
@@ -48,34 +44,38 @@ class RockMap:
     def fill(self, void=True):
         settled_grains = set()
         grains = 0
+        prev = [500, 0]
         while True:
+            if grains % 1000 == 0:
+                print(grains)
             if (500, 0) in settled_grains:
+                self.print_filled_map(settled_grains)
                 return grains
             grains += 1
             grain = [500, 0]
             while True:
+                if grain[1] == self.max_y + 1:
+                    settled_grains.add((x, new_y))
+                    break
                 new_y = grain[1] + 1
                 if void and new_y > self.max_y:
                     return grains - 1
                 settled = True
+                # Test centre, left, right
                 for x in [grain[0], grain[0]-1, grain[0]+1]:
-                    if void and x < self.min_x or x > self.max_x:
+                    # No rocks beyond the min and max x so if there is no infinite floor, its over once it goes beyond the edge
+                    if void and (x < self.min_x or x > self.max_x):
                         return grains - 1
+                    # Check if there is a new space for the grain to fall
                     if (x, new_y) not in (self.rocks | settled_grains):
-                        if new_y == self.max_y + 1:
-                            print((x, new_y))
-                            settled_grains.add((x, new_y))
-                            break
                         grain = [x, new_y]
                         settled = False
                         break
+                # If the grain made it here it means that there is nowhere further to fall and the current position is where it will rest
                 if settled:
-                    if grain[1] < self.max_y:
-                        settled_grains.add((grain[0], grain[1]))
+                    settled_grains.add((grain[0], grain[1]))
                     break
-            if grains > 2000:
-                self.print_filled_map(settled_grains)
-                return 'x'
+        
 
 class Solution:
     def __init__(self):
