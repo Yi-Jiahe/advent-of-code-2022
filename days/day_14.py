@@ -44,18 +44,17 @@ class RockMap:
     def fill(self, void=True):
         settled_grains = set()
         grains = 0
-        prev = [500, 0]
+        path = [(500, 0)]
         while True:
-            if grains % 1000 == 0:
-                print(grains)
             if (500, 0) in settled_grains:
                 self.print_filled_map(settled_grains)
                 return grains
             grains += 1
-            grain = [500, 0]
+            grain = path[-1]
             while True:
                 if grain[1] == self.max_y + 1:
                     settled_grains.add((x, new_y))
+                    path.pop()
                     break
                 new_y = grain[1] + 1
                 if void and new_y > self.max_y:
@@ -70,10 +69,12 @@ class RockMap:
                     if (x, new_y) not in (self.rocks | settled_grains):
                         grain = [x, new_y]
                         settled = False
+                        path.append((grain[0], grain[1]))
                         break
                 # If the grain made it here it means that there is nowhere further to fall and the current position is where it will rest
                 if settled:
                     settled_grains.add((grain[0], grain[1]))
+                    path.pop()
                     break
         
 

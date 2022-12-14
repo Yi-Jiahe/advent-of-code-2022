@@ -16,3 +16,4 @@ It took like 30mins to get the answer for part 2 of about ~20000 grains.
 Each grain took longer than the last.
 
 I saw an optimization on reddit about memomization so I think I'll give that a try.
+Well its not blazingly fast but it is faster.
