@@ -9,7 +9,7 @@ solution = Solution()
 data = solution.load(test_input.splitlines())
 
 def test_part_one():
-    assert solution.part_one(data) == None
+    assert solution.part_one(data) == "24"
 
 def test_part_two():
     with pytest.raises(NotImplementedError):
