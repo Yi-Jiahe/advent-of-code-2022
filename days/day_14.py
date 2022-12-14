@@ -21,38 +21,61 @@ class RockMap:
         for row in self.generate_map():
             print(''.join(row))
     
-    def fill(self):
-        fill_map = self.generate_map()
+    def print_filled_map(self, grains: set):
+        print(grains)
+        min_x = float("inf")
+        max_x = 0
+        max_y = 0
+        for x, y in (self.rocks | grains):
+            min_x = min(x, min_x)
+            max_x = max(x, max_x)
+            max_y = max(y, max_y)
+            if y > 9:
+                print(x, y)
+        ret = [['.' for _ in range(max_x - min_x + 1)] for _ in range(max_y + 1)]
+        ret[0][500-min_x] = '+'
+        for x, y in self.rocks:
+            ret[y][x-min_x] = '#'
+        for x, y in grains:
+            ret[y][x-min_x] = 'o'
+        for row in ret:
+            print(''.join(row))
+        
+        return ret
+        
 
+
+    def fill(self, void=True):
+        settled_grains = set()
         grains = 0
         while True:
+            if (500, 0) in settled_grains:
+                return grains
             grains += 1
             grain = [500, 0]
             while True:
                 new_y = grain[1] + 1
-                if new_y > self.max_y:
-                    # for row in fill_map:
-                    #     print(''.join(row))
+                if void and new_y > self.max_y:
                     return grains - 1
-                settled = False
+                settled = True
                 for x in [grain[0], grain[0]-1, grain[0]+1]:
-                    if x < self.min_x or x > self.max_x:
+                    if void and x < self.min_x or x > self.max_x:
                         return grains - 1
-                    if fill_map[new_y][x-self.min_x] == '.':
+                    if (x, new_y) not in (self.rocks | settled_grains):
+                        if new_y == self.max_y + 1:
+                            print((x, new_y))
+                            settled_grains.add((x, new_y))
+                            break
                         grain = [x, new_y]
-                        settled = True
+                        settled = False
                         break
-                if not settled:
-                    fill_map[grain[1]][grain[0]-self.min_x] = 'o'
+                if settled:
+                    if grain[1] < self.max_y:
+                        settled_grains.add((grain[0], grain[1]))
                     break
-            # print(grains)
-            # for row in fill_map:
-            #     print(''.join(row))
-
-
-                
-
-
+            if grains > 2000:
+                self.print_filled_map(settled_grains)
+                return 'x'
 
 class Solution:
     def __init__(self):
@@ -96,8 +119,7 @@ class Solution:
         return str(ans)
 
 
-    def part_two(self, data: RockMap) -> str:
-        ans = None
-        raise NotImplementedError
+    def part_two(self, rockMap: RockMap) -> str:
+        ans = rockMap.fill(void=False)
         print(f"Ans: {ans}")
         return str(ans)
