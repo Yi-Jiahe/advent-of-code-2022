@@ -20,13 +20,11 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3"""
 solution = Solution()
 data = solution.load(test_input.splitlines())
 
-# def test_part_one():
-#     with pytest.raises(NotImplementedError):
-#         assert solution.part_one(data) == None
+def test_part_one():
+    assert solution.beaconless_positions(data, 10) == 26
+
 
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
-
-def test_overlapping_intervals():
-    assert solution.overlapping_intervals(data, 10) == 26
+    distress_beacon_position = solution.distress_beacon_position(data, 20)
+    assert distress_beacon_position == (14, 11)
+    assert solution.tuning_frequency(distress_beacon_position) == 56000011
