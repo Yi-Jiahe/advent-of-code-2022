@@ -25,3 +25,6 @@ Opening a valve takes 1 minute, meaning the flow rate from the valve to be opene
 Looks like brute force is not going to cut it.
 
 Perhaps I'll give the weighted graph optimization a go.
+
+Okay, I think its faster, its definately alot cleaner but it doesn't work with my current implementation of part 2 because if me and the elephant conduct actions which take different times, travelling along a path does not fit in a state.
+Perhaps I could treat the two as being independent? Will that help?

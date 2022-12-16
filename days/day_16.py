@@ -104,6 +104,7 @@ class Solution:
             valve, flow_rate, neighbours = pattern.match(line).groups()
             ret[valve] = Valve(valve, int(flow_rate), {neighbour: 1 for neighbour in neighbours.split(", ")})
 
+        # Assumption is that AA (start) has more than 2 neighbours
         for valve in ret.values():
             if len(valve.neighbours) == 2 and valve.flow_rate == 0:
                 neighbours = [neighbour for neighbour in valve.neighbours.keys()]
@@ -118,8 +119,6 @@ class Solution:
         return Volcano(valves)
 
     def part_one(self, volcano: Volcano) -> str:
-        for valve in volcano.valves.items():
-            print(valve)
         ans = volcano.most_pressure()
         print(f"Ans: {ans}")
         return str(ans)
