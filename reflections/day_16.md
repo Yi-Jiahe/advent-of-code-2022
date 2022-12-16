@@ -17,3 +17,5 @@ Next I think its a dynamic programming problem, the states are a function of cur
 
 Considered optimizing the problem by converting valves with 0 flow rate and only 2 neighbours into weighted edges but not knowing what part 2 was I decided against it.
 Not sure how much benefit the optimization will offer anyway.
+
+Opening a valve takes 1 minute, meaning the flow rate from the valve to be opened cannot be added in the step when it is opened.

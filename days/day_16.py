@@ -19,16 +19,24 @@ class Volcano:
             if time_left == 0:
                 return 0
 
+            valve = self.valves[position]
+
+            released_pressures = []
+
             total_flow_rate = self.total_flow_rate(open_valves)
 
-            valve = self.valves[position]
-            released_pressures = []
+            # Open the valve
             if valve.flow_rate != 0 and valve.name not in open_valves:
                 new_open_valves = set(open_valves)
                 new_open_valves.add(position)
-                released_pressures.append(total_flow_rate + valve.flow_rate + step(position, time_left-1, frozenset(new_open_valves)))
+                new_open_valves = frozenset(new_open_valves)
+
+                released_pressures.append(total_flow_rate + step(position, time_left-1, new_open_valves))
+
+            # Move
             for neighbour in valve.neighbours:
                 released_pressures.append(total_flow_rate + step(neighbour, time_left-1, open_valves))
+
             return max(released_pressures)
         
         return step("AA", 30, frozenset())
