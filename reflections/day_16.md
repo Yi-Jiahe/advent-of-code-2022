@@ -28,3 +28,5 @@ Perhaps I'll give the weighted graph optimization a go.
 
 Okay, I think its faster, its definately alot cleaner but it doesn't work with my current implementation of part 2 because if me and the elephant conduct actions which take different times, travelling along a path does not fit in a state.
 Perhaps I could treat the two as being independent? Will that help?
+
+From what I see on reddit, one solution is to transverse the compressed graph, only visiting the significant nodes once and opening them. For each complete circuit, do the same for the elephant for the remaining nodes.
