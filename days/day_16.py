@@ -1,7 +1,41 @@
 import re
+import functools
 
 
-class Node:
+class Volcano:
+    def __init__(self, valves):
+        self.valves = valves
+
+    @functools.cache
+    def total_flow_rate(self, open_valves: frozenset):
+        ret = 0
+        for valve in open_valves:
+            ret += self.valves[valve].flow_rate
+        return ret
+    
+    def most_pressure(self):
+        @functools.cache
+        def step(position: str, time_left: int, open_valves: frozenset):
+            if time_left == 0:
+                return 0
+
+            total_flow_rate = self.total_flow_rate(open_valves)
+
+            valve = self.valves[position]
+            released_pressures = []
+            if valve.flow_rate != 0 and valve.name not in open_valves:
+                new_open_valves = set(open_valves)
+                new_open_valves.add(position)
+                released_pressures.append(total_flow_rate + valve.flow_rate + step(position, time_left-1, frozenset(new_open_valves)))
+            for neighbour in valve.neighbours:
+                released_pressures.append(total_flow_rate + step(neighbour, time_left-1, open_valves))
+            return max(released_pressures)
+        
+        return step("AA", 30, frozenset())
+
+
+
+class Valve:
     def __init__(self, name: str, flow_rate: int, neighbours: [str]):
         self.name = name
         self.flow_rate = flow_rate
@@ -23,13 +57,11 @@ class Solution:
         ret = {}
         for line in map(lambda line: line.strip(), iterable):
             valve, flow_rate, neighbours = pattern.match(line).groups()
-            ret[valve] = Node(valve, int(flow_rate), neighbours.split(", "))
-        return ret
+            ret[valve] = Valve(valve, int(flow_rate), neighbours.split(", "))
+        return Volcano(ret)
 
-    def part_one(self, data: dict) -> str:
-        ans = None
-        print(data)
-        raise NotImplementedError
+    def part_one(self, volcano: Volcano) -> str:
+        ans = volcano.most_pressure()
         print(f"Ans: {ans}")
         return str(ans)
 

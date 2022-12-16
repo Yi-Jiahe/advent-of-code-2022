@@ -14,3 +14,6 @@ The problem is that it would be very easy to miss out possibilities doing it by 
 I guess the first order of business is to form the graph.
 
 Next I think its a dynamic programming problem, the states are a function of current position, time left and opened valves?
+
+Considered optimizing the problem by converting valves with 0 flow rate and only 2 neighbours into weighted edges but not knowing what part 2 was I decided against it.
+Not sure how much benefit the optimization will offer anyway.
