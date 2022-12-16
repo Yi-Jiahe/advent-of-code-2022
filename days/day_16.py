@@ -16,7 +16,7 @@ class Volcano:
     def most_pressure(self):
         @functools.cache
         def step(position: str, time_left: int, open_valves: frozenset):
-            if time_left == 0:
+            if time_left <= 0:
                 return 0
 
             valve = self.valves[position]
@@ -34,12 +34,49 @@ class Volcano:
                 released_pressures.append(total_flow_rate + step(position, time_left-1, new_open_valves))
 
             # Move
-            for neighbour in valve.neighbours:
-                released_pressures.append(total_flow_rate + step(neighbour, time_left-1, open_valves))
-
+            for neighbour, weight in valve.neighbours.items():
+                if weight <= time_left:
+                    released_pressures.append(total_flow_rate * weight + step(neighbour, time_left-weight, open_valves))
+                else:
+                    released_pressures.append(total_flow_rate * time_left + step(neighbour, 0, open_valves))
             return max(released_pressures)
         
         return step("AA", 30, frozenset())
+    
+    def most_with_elephant(self):
+        @functools.cache
+        def step(positions: tuple, time_left: int, open_valves: frozenset):
+            if time_left == 0:
+                return 0
+
+            valve_me = self.valves[positions[0]]
+            valve_elephant = self.valves[positions[1]]
+
+            released_pressures = []
+
+            total_flow_rate = self.total_flow_rate(open_valves)
+
+            actions_me = valve_me.neighbours
+            if valve_me.flow_rate != 0 and valve_me.name not in open_valves:
+                actions_me.append(valve_me.name)
+            actions_elephant = valve_elephant.neighbours
+            if valve_elephant.flow_rate != 0 and valve_elephant.name not in open_valves:
+                actions_elephant.append(valve_elephant.name)
+            
+            for action_me in actions_me:
+                for action_elephant in actions_elephant:
+                        if action_me == valve_me.name and action_elephant == valve_elephant and action_me == action_elephant:
+                            break
+                        new_open_valves = set(open_valves)
+                        if action_me == valve_me.name:
+                            new_open_valves.add(valve_me.name)
+                        if action_elephant == valve_elephant.name:
+                            new_open_valves.add(valve_elephant.name)
+                        new_open_valves = frozenset(new_open_valves)
+                        released_pressures.append(total_flow_rate + step(tuple(sorted([action_me, action_elephant])), time_left-1, new_open_valves))
+            return max(released_pressures)
+        
+        return step(tuple(["AA", "AA"]), 26, frozenset())
 
 
 
@@ -65,17 +102,30 @@ class Solution:
         ret = {}
         for line in map(lambda line: line.strip(), iterable):
             valve, flow_rate, neighbours = pattern.match(line).groups()
-            ret[valve] = Valve(valve, int(flow_rate), neighbours.split(", "))
-        return Volcano(ret)
+            ret[valve] = Valve(valve, int(flow_rate), {neighbour: 1 for neighbour in neighbours.split(", ")})
+
+        for valve in ret.values():
+            if len(valve.neighbours) == 2 and valve.flow_rate == 0:
+                neighbours = [neighbour for neighbour in valve.neighbours.keys()]
+                new_length = ret[neighbours[0]].neighbours[valve.name] + ret[neighbours[1]].neighbours[valve.name]
+                ret[neighbours[0]].neighbours[neighbours[1]] = new_length
+                ret[neighbours[1]].neighbours[neighbours[0]] = new_length
+                del ret[neighbours[0]].neighbours[valve.name]
+                del ret[neighbours[1]].neighbours[valve.name]
+
+        valves = {name: valve for name, valve in ret.items() if not (len(valve.neighbours) == 2 and valve.flow_rate == 0)}
+
+        return Volcano(valves)
 
     def part_one(self, volcano: Volcano) -> str:
+        for valve in volcano.valves.items():
+            print(valve)
         ans = volcano.most_pressure()
         print(f"Ans: {ans}")
         return str(ans)
 
 
-    def part_two(self, data: dict) -> str:
-        ans = None
-        raise NotImplementedError
+    def part_two(self, volcano: Volcano) -> str:
+        ans = volcano.most_with_elephant()
         print(f"Ans: {ans}")
         return str(ans)

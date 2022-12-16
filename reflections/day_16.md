@@ -19,3 +19,9 @@ Considered optimizing the problem by converting valves with 0 flow rate and only
 Not sure how much benefit the optimization will offer anyway.
 
 Opening a valve takes 1 minute, meaning the flow rate from the valve to be opened cannot be added in the step when it is opened.
+
+# Part 2
+
+Looks like brute force is not going to cut it.
+
+Perhaps I'll give the weighted graph optimization a go.
