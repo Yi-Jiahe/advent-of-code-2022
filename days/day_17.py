@@ -1,26 +1,38 @@
 class Piece:
-    def __init__(self):
-        self.rocks = None
-        self.max_x = None
+    def spawn(self, height):
+        for rock in self.rocks:
+            rock[0] += 2
+            rock[1] += height + 3
 
+    
 class HorizontalLine(Piece):
     def __init__(self, height):
-        pass
+        self.rocks = [[0, 0], [1, 0], [2, 0], [3, 0]]
+        super().spawn(height)
+
+class Cross(Piece):
+    def __init__(self, height):
+        self.rocks = [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]]
+        super().spawn(height)
+
+
+class L(Piece):
+    def __init__(self, height):
+        self.rocks = [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2]]
+        super().spawn(height)
+
+class VerticalLine(Piece):
+    def __init__(self, height):
+        self.rocks = [[0, 0], [0, 1], [0, 2], [0, 3]]
+        super().spawn(height)
+
+class Square(Piece):
+    def __init__(self, height):
+        self.rocks = [[0, 0], [0, 1], [1, 0], [1, 1]]
+        super().spawn(height)
 
 class Game:
-    # Left of piece is x=0, bottom of piece is y=0
-    self.pieces = [
-        # Hoizontal Line
-        [[0, 0], [1, 0], [2, 0], [3, 0]],
-        # Cross
-        [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]],
-        # L
-        [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2]],
-        # Vertical Line
-        [[0, 0], [0, 1], [0, 2], [0, 3]],
-        # Square
-        [[0, 0], [0, 1], [1, 0], [1, 1]]
-    ]
+    pass
 
 class Solution:
     def __init__(self):
