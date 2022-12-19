@@ -1,3 +1,6 @@
+import math
+
+
 class Solution:
     def __init__(self):
         pass
@@ -26,22 +29,35 @@ class Solution:
 
 
     def part_two(self, data: set) -> str:
-        min_x, max_x = float("inf"), -float("inf")
-        min_y, max_y = float("inf"), -float("inf")
-        min_z, max_z = float("inf"), -float("inf")
+        bounds = [[float("inf"), -float("inf")] for _ in range(3)]
 
-        for x, y, z in data:
-            min_x = min(x, min_x)
-            max_x = max(x, max_x)
-            min_y = min(y, min_y)
-            max_y = max(y, max_y)
-            min_z = min(z, min_z)
-            max_z = max(z, max_z)
-        
-        print(min_x, max_x)
-        print(min_y, max_y)
-        print(min_z, max_z)
+        for cube in data:
+            for axis in range(3):
+                bounds[axis][0] = min(bounds[axis][0], cube[axis])
+                bounds[axis][1] = max(bounds[axis][1], cube[axis])
 
-        raise NotImplementedError
+        ans = 0
+        outside = set()
+        stack = [tuple(bounds[axis][0]-1 for axis in range(3))]
+        while stack:
+            pos = stack.pop()
+            outside.add(pos)
+            for axis in range(3):
+                for direction in [-1, 1]:
+                    adjecent_cube = list(pos)
+                    adjecent_cube[axis] += direction
+                    adjecent_cube = tuple(adjecent_cube)
+                    # Airspace is next to a lava cube
+                    # Add the direction we are checking to the number of external sides
+                    if adjecent_cube in data:
+                        ans += 1
+                        continue
+                    # Already searched or searching
+                    if adjecent_cube in outside or adjecent_cube in stack:
+                        continue
+                    # Outside the search area
+                    if adjecent_cube[axis] < bounds[axis][0] - 1 or bounds[axis][1] + 1 < adjecent_cube[axis]:
+                        continue
+                    stack.append(adjecent_cube)
         print(f"Ans: {ans}")
         return str(ans)
