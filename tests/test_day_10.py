@@ -155,5 +155,6 @@ data = solution.load(test_input.splitlines())
 def test_part_one():
     assert solution.part_one(data) == "13140"
 
-# def test_part_two():
-#     assert solution.part_two(data) == None
+@pytest.mark.skip(reason="Visual solution")
+def test_part_two():
+    assert solution.part_two(data) == None

@@ -19,5 +19,6 @@ data = solution.load(test_input.splitlines())
 def test_part_one():
     assert solution.part_one(data) == "1651"
 
-# def test_part_two():
-#     assert solution.part_two(data) == "1707"
+@pytest.mark.skip(reason="Dependent feature not yet ready")
+def test_part_two():
+    assert solution.part_two(data) == "1707"
