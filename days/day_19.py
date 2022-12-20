@@ -7,10 +7,11 @@ class Blueprint:
         self.id = id
         self.costs = costs
 
-    def solve(self):
+    def solve(self, time_available: int):
         max_robots_required = {
             'ore': max(self.costs['ore']['ore'], self.costs['clay']['ore'], self.costs['obsidian']['ore'], self.costs['geode']['ore']),
-            'clay': self.costs['obsidian']['clay']
+            'clay': self.costs['obsidian']['clay'],
+            'obsidian': self.costs['geode']['obsidian']
         }
 
         @functools.cache
@@ -41,13 +42,17 @@ class Blueprint:
                 resources[0] = max_robots_required['ore']
             if robots[1] >= max_robots_required['clay']:
                 resources[1] = max_robots_required['clay']
+            if robots[2] >= max_robots_required['obsidian']:
+                resources[2] = max_robots_required['obsidian']
+
 
             # If resources permit, we always want to build a geode robot
             if can_build['geode'] and time_left >= 2:
                 new_resources = resources.copy()
                 if robots[0] < max_robots_required['ore']:
                     new_resources[0] -= self.costs['geode']['ore']
-                new_resources[2] -= self.costs['geode']['obsidian']
+                if robots[2] < max_robots_required['obsidian']:
+                    new_resources[2] -= self.costs['geode']['obsidian']
                 new_robots = list(robots)
                 new_robots[3] += 1
                 return geodes_mined + step(time_left-1, tuple(new_robots), tuple(new_resources))
@@ -75,7 +80,7 @@ class Blueprint:
                 potential_geodes_mined.append(step(time_left-1, tuple(new_robots), tuple(new_resources)))
 
             # Build an obsidian robot if the resources permit and it can possibly make an impact
-            if can_build['obsidian'] and time_left >= 4:
+            if can_build['obsidian'] and robots[2] < max_robots_required['obsidian'] and time_left >= 4:
                 new_resources = resources.copy()
                 if robots[0] < max_robots_required['ore']:
                     new_resources[0] -= self.costs['obsidian']['ore']
@@ -87,7 +92,7 @@ class Blueprint:
 
             return geodes_mined + max(potential_geodes_mined)
 
-        return step(24, (1, 0, 0, 0), (0, 0, 0))
+        return step(time_available, (1, 0, 0, 0), (0, 0, 0))
 
 class Solution:
     def __init__(self):
@@ -124,9 +129,7 @@ class Solution:
     def part_one(self, data: []) -> str:
         ans = 0
         for blueprint in data:
-            print(blueprint.costs)
-            geodes = blueprint.solve()
-            print(f"{blueprint.id}: {geodes}")
+            geodes = blueprint.solve(24)
             ans += blueprint.id * geodes
             
         print(f"Ans: {ans}")
@@ -134,7 +137,11 @@ class Solution:
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        raise NotImplementedError
+        ans = 1
+        for blueprint in data[:3]:
+            geodes = blueprint.solve(32)
+            print(f"{blueprint.id}: {geodes}")
+            ans *= geodes
+
         print(f"Ans: {ans}")
         return str(ans)

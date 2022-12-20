@@ -8,9 +8,11 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
 solution = Solution()
 data = solution.load(test_input.splitlines())
 
+# @pytest.mark.skip(reason="Limit test time when no test specified")
 def test_part_one():
     assert solution.part_one(data) == "33"
-
-@pytest.mark.skip(reason="Not implemented")
+    
+# @pytest.mark.skip(reason="Limit test time when no test specified")
 def test_part_two():
-    assert solution.part_two(data) == None
+    assert data[0].solve(32) == 56
+    assert data[1].solve(32) == 62

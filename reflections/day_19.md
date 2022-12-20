@@ -40,3 +40,11 @@ I think based on the time available its likely that doing so will maximise geode
 I wonder if it extends to obsidian robots too?
 If you can't make a geode robot, should you make an obsidian robot?
 The only issue I can see with this approach is if ore is the choke point but will it be?
+
+# Part 2
+
+Looks like I'll have to cap the amount of obsidian robots to be made as well.
+
+I saw a nice optimization on reddit that's similar to day 16.
+You can collapse the search space into what action to do next instead of going minute by minute.
+Unfortunately it seems like a lot of thinking and my naive solution appears to be working, abeit slowly.
