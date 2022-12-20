@@ -12,6 +12,6 @@ data = solution.load(test_input.splitlines())
 def test_part_one():
     assert solution.part_one(data) == "33"
 
+@pytest.mark.skip(reason="Not implemented")
 def test_part_two():
-    with pytest.raises(NotImplementedError):
-        assert solution.part_two(data) == None
+    assert solution.part_two(data) == None
