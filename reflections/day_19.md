@@ -10,3 +10,10 @@ The steps would be to create or not create a robot when possible and which type 
 
 In 24 minutes with robots that take a minute to mine each resource and can cost up to 14 of a resource to craft, looks to be quite simple.
 The issue might be in branching too much from the low tier robots.
+
+Hmm I sense a possible issue caused by being able to build more than one robot a minute.
+Actually if we assume the factory is busy while building a robot, it can only do one robot a minute.
+
+I thought it would be pretty easily but its taking forever to run. 
+
+Saw some optimizations on reddit, not building more ore robots than neccessary, capping resource amounts to improve memozation performance and building towards geode goals, breaking early.
