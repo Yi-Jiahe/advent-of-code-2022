@@ -18,6 +18,7 @@ I think I made a mistake with when the robot is ready to contribute to the new r
 When its just made it still needs another minute to generate new resources.
 Keeping track of this further increases the search space however.
 Hmm there is still a bug somewhere.
+Oh even the previously existing robots's resources can only be added after testing if new robots can be built.
 
 I thought it would be pretty easily but its taking forever to run. 
 

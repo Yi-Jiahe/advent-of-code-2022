@@ -3,7 +3,7 @@ import re
 
 
 class Blueprint:
-    def __init__(self, id: int,  costs: dict):
+    def __init__(self, id: int, costs: dict):
         self.id = id
         self.costs = costs
 
@@ -12,8 +12,9 @@ class Blueprint:
             'ore': max(self.costs['ore']['ore'], self.costs['clay']['ore'], self.costs['obsidian']['ore'], self.costs['geode']['ore']),
             'clay': self.costs['obsidian']['clay']
         }
+
         @functools.cache
-        def step(time_left: int, robots: tuple, new_robot: tuple, resources: tuple) -> int:
+        def step(time_left: int, robots: tuple, resources: tuple) -> int:
             if time_left == 0:
                 return 0
             
@@ -23,16 +24,17 @@ class Blueprint:
             if time_left == 1:
                 return geodes_mined
 
+            can_build = {
+                'ore': resources[0] >= self.costs['ore']['ore'],
+                'clay': resources[0] >= self.costs['clay']['ore'],
+                'obsidian': resources[0] >= self.costs['obsidian']['ore'] and resources[1] >= self.costs['obsidian']['clay'],
+                'geode': resources[0] >= self.costs['geode']['ore'] and resources[2] >= self.costs['geode']['obsidian']
+            }
+
             # Collect resources
             resources = list(resources)
             for i, n in enumerate(robots[:3]):
                 resources[i] += n
-
-            # Add new robot to robots
-            robots = list(robots)
-            for i, robot in enumerate(new_robot):
-                robots[i] += robot
-            robots = tuple(robots)
 
             # Cap resources
             if robots[0] >= max_robots_required['ore']:
@@ -41,43 +43,51 @@ class Blueprint:
                 resources[1] = max_robots_required['clay']
 
             # If resources permit, we always want to build a geode robot
-            if resources[0] >= self.costs['geode']['ore'] and resources[2] >= self.costs['geode']['obsidian'] and time_left > 2:
+            if can_build['geode'] and time_left >= 2:
                 new_resources = resources.copy()
                 if robots[0] < max_robots_required['ore']:
                     new_resources[0] -= self.costs['geode']['ore']
                 new_resources[2] -= self.costs['geode']['obsidian']
-                return geodes_mined + step(time_left-1, robots, (0, 0, 0, 1), tuple(new_resources))
+                new_robots = list(robots)
+                new_robots[3] += 1
+                return geodes_mined + step(time_left-1, tuple(new_robots), tuple(new_resources))
 
             potential_geodes_mined = []
 
             # Do nothing
-            potential_geodes_mined.append(step(time_left-1, robots, (0, 0, 0, 0), tuple(resources)))
+            potential_geodes_mined.append(step(time_left-1, robots, tuple(resources)))
 
-            # Try building an ore robot if the resources permit and we don't have enough ore production to produce 1 robot per minute
-            if resources[0] >= self.costs['ore']['ore'] and robots[0] < max_robots_required['ore'] and time_left > 6:
+            # Try building an ore robot if the resources permit and we don't have enough ore production to produce 1 robot per minute and it can possibly make an impact
+            if can_build['ore'] and robots[0] < max_robots_required['ore'] and time_left >= 6:
                 new_resources = resources.copy()
                 new_resources[0] -= self.costs['ore']['ore']
-                potential_geodes_mined.append(step(time_left-1, robots, (1, 0, 0, 0), tuple(new_resources)))
+                new_robots = list(robots)
+                new_robots[0] += 1
+                potential_geodes_mined.append(step(time_left-1, tuple(new_robots), tuple(new_resources)))
 
-            # Try building a clay robot if the resources permit and we don't have enough clay production to produce 1 obsidian robot per minute
-            if resources[0] >= self.costs['clay']['ore'] and robots[1] < max_robots_required['clay'] and time_left > 6:
+            # Try building a clay robot if the resources permit and we don't have enough clay production to produce 1 obsidian robot per minute and it can possibly make an impact
+            if can_build['clay'] and robots[1] < max_robots_required['clay'] and time_left >= 6:
                 new_resources = resources.copy()
                 if robots[0] < max_robots_required['ore']:
                     new_resources[0] -= self.costs['clay']['ore']
-                potential_geodes_mined.append(step(time_left-1, robots, (0, 1, 0, 0), tuple(new_resources)))
+                new_robots = list(robots)
+                new_robots[1] += 1
+                potential_geodes_mined.append(step(time_left-1, tuple(new_robots), tuple(new_resources)))
 
-            # Build an obsidian robot if the resources permit
-            if resources[0] >= self.costs['obsidian']['ore'] and resources[1] >= self.costs['obsidian']['clay'] and time_left > 4:
+            # Build an obsidian robot if the resources permit and it can possibly make an impact
+            if can_build['obsidian'] and time_left >= 4:
                 new_resources = resources.copy()
                 if robots[0] < max_robots_required['ore']:
                     new_resources[0] -= self.costs['obsidian']['ore']
                 if robots[1] < max_robots_required['clay']:
                     new_resources[1] -= self.costs['obsidian']['clay']
-                potential_geodes_mined.append(step(time_left-1, robots, (0, 0, 1, 0), tuple(new_resources)))
+                new_robots = list(robots)
+                new_robots[2] += 1
+                potential_geodes_mined.append(step(time_left-1, tuple(new_robots), tuple(new_resources)))
 
             return geodes_mined + max(potential_geodes_mined)
 
-        return step(24, (1, 0, 0, 0), (0, 0, 0, 0), (0, 0, 0))
+        return step(24, (1, 0, 0, 0), (0, 0, 0))
 
 class Solution:
     def __init__(self):
