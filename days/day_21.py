@@ -45,6 +45,16 @@ class Solution:
 
     def part_two(self, data: []) -> str:
         ans = None
-        raise NotImplementedError
+        occurances = {}
+        for name, value in data.items():
+            if isinstance(value, int):
+                continue
+            for monkey in (value[0], value[2]):
+                if monkey not in occurances:
+                    occurances[monkey] = 0
+                occurances[monkey] += 1
+        for x in occurances.values():
+            if x >= 2:
+                raise ValueError("Monkey is reused")
         print(f"Ans: {ans}")
         return str(ans)

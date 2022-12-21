@@ -24,6 +24,5 @@ data = solution.load(test_input.splitlines())
 def test_part_one():
     assert solution.part_one(data) == "152"
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part_two():
     assert solution.part_two(data) == None
