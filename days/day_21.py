@@ -1,4 +1,5 @@
 import re
+from z3 import Int, Solver, ArithRef
 
 
 class Solution:
@@ -46,7 +47,7 @@ class Solution:
     def part_two(self, data: []) -> str:
         def solve(name):
             value = data[name]
-            if isinstance(value, int):
+            if isinstance(value, int) or isinstance(value, ArithRef):
                 return value
             else:
                 a = solve(value[0])
@@ -61,18 +62,14 @@ class Solution:
                 elif operation == '/':
                     return a / b
 
-        left_original, right_original = solve(data['root'][0]), solve(data['root'][2])
-        data['humn'] += 1
-        left_new = solve(data['root'][0])
-        humn_side = 0 if left_original != left_new else 2
-        to_match = right_original if humn_side == 0 else left_original
+        x = Int('x')
+        data['humn'] = x
+        left, right = solve(data['root'][0]), solve(data['root'][2])
 
-        ans = None
-        for x in range(-999999, 999999):
-            data['humn'] = x
-            if solve(data['root'][humn_side]) == to_match:
-                ans = x
-                break
+        s = Solver()
+        s.add(left == right)
+        s.check()
 
+        ans = s.model()[x]
         print(f"Ans: {ans}")
         return str(ans)

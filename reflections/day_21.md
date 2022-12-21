@@ -19,3 +19,5 @@ Brute forcing the answer out from the range -99999 to 99999 isn't working as exp
 
 The most obvious optimization I can think of is to identify which values change as a result of changing humn and only recalcuate those.
 Also if I've managed to identify which values are affected by humn I could just feed the whole equation to a constraint solver.
+
+Plugged the problem into z3 and yup, brute force would not have worked.

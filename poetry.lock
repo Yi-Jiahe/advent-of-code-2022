@@ -101,10 +101,18 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
+[[package]]
+name = "z3-solver"
+version = "4.11.2.0"
+description = "an efficient SMT solver library"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "8507b1e02a5b7f1a2e525ef3728f0c513f3939828ce50680bafb00e86c05af10"
+content-hash = "0e583ef538b876dd2e9fceed07cba5af2bb4fb37fd1f92b6f5e886146a9c796e"
 
 [metadata.files]
 attrs = [
@@ -142,4 +150,12 @@ pytest = [
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
+z3-solver = [
+    {file = "z3-solver-4.11.2.0.tar.gz", hash = "sha256:c7c7f10350db19eec831f9a45833268022c786e9ac0fbd9b2330956b377b9c39"},
+    {file = "z3_solver-4.11.2.0-py2.py3-none-macosx_10_16_x86_64.whl", hash = "sha256:90b34ffbd42ee9465ca047bfb99775c1000f6548f2b98bdeb7d52397347aa197"},
+    {file = "z3_solver-4.11.2.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:2cb81dcc220292dfcff6b5937f5faebeba4d0db7d2cc690f43e6f619bda40c47"},
+    {file = "z3_solver-4.11.2.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:9b5a11370df7ac27394fc660c812b2c9aac26f21fadf11e2c51a19cb707c1795"},
+    {file = "z3_solver-4.11.2.0-py2.py3-none-win32.whl", hash = "sha256:e4d3302c4046d65d0c8b5601d9b085f219b0fa78e312d08a5b24c86bb1629d05"},
+    {file = "z3_solver-4.11.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:f763c6ad22a8455df46efa3755a75d5af5d40535a1e5ec5171c199cfda663e90"},
 ]
