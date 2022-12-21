@@ -25,4 +25,4 @@ def test_part_one():
     assert solution.part_one(data) == "152"
 
 def test_part_two():
-    assert solution.part_two(data) == None
+    assert solution.part_two(data) == "301"

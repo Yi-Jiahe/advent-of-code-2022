@@ -44,17 +44,35 @@ class Solution:
 
 
     def part_two(self, data: []) -> str:
-        ans = None
-        occurances = {}
-        for name, value in data.items():
+        def solve(name):
+            value = data[name]
             if isinstance(value, int):
-                continue
-            for monkey in (value[0], value[2]):
-                if monkey not in occurances:
-                    occurances[monkey] = 0
-                occurances[monkey] += 1
-        for x in occurances.values():
-            if x >= 2:
-                raise ValueError("Monkey is reused")
+                return value
+            else:
+                a = solve(value[0])
+                b = solve(value[2])
+                operation = value[1]
+                if operation == '+':
+                    return a + b
+                elif operation == '-':
+                    return a - b
+                elif operation == '*':
+                    return a * b
+                elif operation == '/':
+                    return a / b
+
+        left_original, right_original = solve(data['root'][0]), solve(data['root'][2])
+        data['humn'] += 1
+        left_new = solve(data['root'][0])
+        humn_side = 0 if left_original != left_new else 2
+        to_match = right_original if humn_side == 0 else left_original
+
+        ans = None
+        for x in range(-999999, 999999):
+            data['humn'] = x
+            if solve(data['root'][humn_side]) == to_match:
+                ans = x
+                break
+
         print(f"Ans: {ans}")
         return str(ans)
