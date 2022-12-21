@@ -30,7 +30,7 @@ I added in a reflection for each day because I wanted to get into journalling an
 |18|:heavy_check_mark:|:heavy_check_mark:|
 |19|:heavy_check_mark:|:heavy_check_mark:|
 |20|:heavy_check_mark:|:heavy_check_mark:|
-|21|||
+|21|:heavy_check_mark:||
 |22|||
 |23|||
 |24|||
