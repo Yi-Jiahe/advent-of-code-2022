@@ -31,7 +31,7 @@ I added in a reflection for each day because I wanted to get into journalling an
 |19|:heavy_check_mark:|:heavy_check_mark:|
 |20|:heavy_check_mark:|:heavy_check_mark:|
 |21|:heavy_check_mark:|:heavy_check_mark:|
-|22|||
+|22|:heavy_check_mark:||
 |23|||
 |24|||
 |25|||
