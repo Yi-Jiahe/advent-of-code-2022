@@ -35,3 +35,8 @@ I added in a reflection for each day because I wanted to get into journalling an
 |23|||
 |24|||
 |25|||
+
+Notes to self:
+- I need a better way to organize the files.
+Having separate directories for the code, input, tests and reflections is fine.
+However by day 15 or so there are so many files that won't be touched anymore that its hard to find the current day's files.
