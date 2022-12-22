@@ -21,3 +21,17 @@ Made a mistake in my rollover method by forgetting to check if the position was 
 Fortunately my randomly selected test point had a rock and I was able to figure out the problem.
 Should probably have been more through with my selection rather than leaving it to chance but if I didn't think of it while coding it.
 I guess its a lesson on more care paid to thinking about test cases.
+
+# Part 2
+
+Okay, I'm happy with how I implemented the wrap around for part one.
+If I had gone with space it would have needed to be completely redone.
+At least with the current implementation I might be able to get way with just changing how the wrap around is calculated?
+
+It's not a head banging on the wall type of question but this will require some thought.
+
+Maybe I can split the sides up and link them. 
+This uniformity will make then easier to handle, but will I lose the benefits of the originally linked sides?
+But it wouldn't matter if the mapping is correct.
+And the infomation would be used in mapping the sides in the first place.
+
