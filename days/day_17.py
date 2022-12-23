@@ -4,7 +4,12 @@ class Piece:
             rock[0] += 2
             rock[1] += height + 3
 
-    
+    def move(self, direction):
+        new_rocks = self.rocks.copy()
+        for rock in self.rocks:
+            rock[0] += direction[0]
+            rock[1] += direction[1]
+
 class HorizontalLine(Piece):
     def __init__(self, height):
         self.rocks = [[0, 0], [1, 0], [2, 0], [3, 0]]
@@ -16,7 +21,7 @@ class Cross(Piece):
         super().spawn(height)
 
 
-class L(Piece):
+class MirroredL(Piece):
     def __init__(self, height):
         self.rocks = [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2]]
         super().spawn(height)
@@ -32,7 +37,18 @@ class Square(Piece):
         super().spawn(height)
 
 class Game:
-    pass
+    def __init__(self):
+        self.max_height = 0
+        self.turn = 0
+        self.tower = set()
+
+    def check_collision_piece(self, piece: Piece):
+        for rock in piece.rocks:
+            if rock[0] < 0 or 7 <= rock[0]:
+                return True
+            if tuple(rock) in self.tower:
+                pass
+
 
 class Solution:
     def __init__(self):
