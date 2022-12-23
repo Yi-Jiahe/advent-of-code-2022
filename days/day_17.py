@@ -65,7 +65,52 @@ class Solution:
         return ret
 
     def part_one(self, data: []) -> str:
-        ans = None
+        def generate_new_position(rock, direction):
+            new_position = rock.copy()
+            for block in rock:
+                for axis in range(2):
+                    block[axis] += direction[axis]
+            return block
+
+        rocks = [
+            [[0, 0], [1, 0], [2, 0], [3, 0]],
+            [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]],
+            [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2]],
+            [[0, 0], [0, 1], [0, 2], [0, 3]],
+            [[0, 0], [0, 1], [1, 0], [1, 1]]
+        ]
+
+        tower = set()
+        top = 0
+        rock = None
+
+        def check_collision(rock):
+            for block in rock:
+                if block[0] < 0 or 7 <= block[0]:
+                    return True
+            if tuple(block) in tower:
+                return True
+            if block[1] < 0:
+                return True
+            return False
+
+        i = 0
+        j = 0
+        n_moves = len(data)
+        while i < 2022:
+            rock = rocks[i%len(rocks)].copy()
+            for block in rock:
+                block[0] += 2
+                block[1] += top + 3
+            while True:
+                j %= n_moves
+                direction = data[j]
+                if direction == '<':
+                    new_position = generate_new_position(rock, (-1, 0))
+                elif direction == '>':
+                    new_position = generate_new_position(rock, (1, 0))
+                
+                    
         raise NotImplementedError
         print(f"Ans: {ans}")
         return str(ans)
