@@ -7,8 +7,9 @@ image:
 
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
+# Should add a check to make sure that the date is between 1 - 25 Dec 2022. 
+# Or perhaps I'll just remove the new_solution call.
   - init: |
       poetry install --no-root
     command: |
       source .venv/bin/activate
-      bash new_solution.sh "$(date +'%d')"
